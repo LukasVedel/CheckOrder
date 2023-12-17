@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
-import { DocumentTextIcon, HomeIcon, PlusSmallIcon } from "react-native-heroicons/solid";
 
 // Konfiguration for Firebase
 const firebaseConfig = {
@@ -24,11 +23,11 @@ initializeApp(firebaseConfig);
 // Importer komponenter fra forskellige filer
 import SignUpForm from './components/SignUpForm';
 import LoginForm from './components/LoginForm';
-import Startside from './components/Startside';
-import FakturaOversigt from './components/FakturaOversigt';
-import AddEventScreen from './components/AddEventScreen';
-import FakturaEdit from './components/ProfileScreen/FakturaEdit';
-import EventKontrol from './components/ProfileScreen/EventKontrol';
+import ProfileScreen from './components/ProfileScreen';
+import ProductSearchScreen from './components/ProductSearchScreen';
+import AddProductScreen from './components/AddEventScreen';
+import CheckoutScreen from './components/ProfileScreen/InvoiceScreen';
+import AdminScreen from './components/ProfileScreen/AdminScreen';
 
 
 // Opret en Tab Navigator
@@ -66,37 +65,32 @@ function App() {
   }, []);
 
 
-  const renderScreensBasedOnRole = () => {
-    const screens = [
-      <Tab.Screen key="Startside" name="Startside" component={Startside} options={{ headerShown: false, tabBarIcon: HomeIcon }} />,
-    ];
-
-    if (role === 'lærer') {
-      screens.push(
-        <Tab.Screen key="AddEvent" name="Tilføj Event" component={AddEventScreen} options={{ headerShown: false, tabBarIcon: PlusSmallIcon}} />, 
-        <Tab.Screen key="FakturaOversigt" name="FakturaOversigt" component={FakturaOversigt} options={{ headerShown: false, tabBarIcon: DocumentTextIcon }} />
-      );
-    } else if (role === 'kantine') {
-      screens.push(
-        <Tab.Screen key="EventKontrol" name="Event Kontrol" component={EventKontrol} options={{ headerShown: false }} />,
-      );
-    } else if (role === 'kantineEjer') {
-      screens.push(
-        <Tab.Screen key="FakturaEdit" name="FakturaEdit" component={FakturaEdit} options={{ headerShown: false, tabBarIcon: DocumentTextIcon }} />
-      );
-    }
-
-    return screens;
-  };
-
-  return (
+   // Returner JSX for appen
+   return (
     <NavigationContainer>
       <Tab.Navigator>
-        {/* Render skærme baseret på brugerens rolle */}
-        {user ? renderScreensBasedOnRole() : (
+        {/* Hvis brugeren er logget ind, vis disse skærme */}
+        {user && (
           <>
-            <Tab.Screen name="SignUp" component={SignUpForm} options={{ headerShown: false }} />
-            <Tab.Screen name="Login" component={LoginForm} options={{ headerShown: false }} />
+            <Tab.Screen name="Profile" component={ProfileScreen} />
+            <Tab.Screen name="MineTilbud" component={ProductSearchScreen} />
+            <Tab.Screen name="Checkout" component={CheckoutScreen} />
+          </>
+        )}
+        {/* Hvis brugeren er logget ind som admin, vis "Tilføj produkt" skærmen */}
+        {user && role === 'admin' && (
+          <>
+          <Tab.Screen name="Tilføj produkt" component={AddProductScreen} />
+          <Tab.Screen name="Admin" component={AdminScreen} />
+          </>
+          
+          
+        )}
+        {/* Hvis brugeren ikke er logget ind, vis disse skærme */}
+        {!user && (
+          <>
+            <Tab.Screen name="SignUp" component={SignUpForm} />
+            <Tab.Screen name="Login" component={LoginForm} />
           </>
         )}
       </Tab.Navigator>
@@ -104,5 +98,6 @@ function App() {
   );
 }
 
+// Eksporter App komponenten som standard
 export default App;
 

@@ -3,9 +3,11 @@ import { View, Text, TouchableOpacity, Modal, Pressable } from 'react-native';
 import { getAuth, signOut, deleteUser } from "firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 import styles from './ProfileScreen/styles';
+// Komponent for visning af events
 import EventList from './ProfileScreen/EventList';
 import { Ionicons } from '@expo/vector-icons';
 
+// Profilskærmen for brugerindstillinger
 function ProfileScreen() {
   const auth = getAuth();
   const navigation = useNavigation();

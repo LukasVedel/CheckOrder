@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Text, View, TextInput, ActivityIndicator, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { Button, Text, View, TextInput, ActivityIndicator, StyleSheet, TouchableOpacity, ScrollView,Image } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 import { getFirestore, setDoc, doc } from 'firebase/firestore';
+import logo from '../assets/checkorder.webp';
 
 function SignUpForm() {
   // Opretter lokal state for formens felter og fejlmeddelelser
@@ -42,6 +43,7 @@ function SignUpForm() {
   return (
     // Rendrer formen og relaterede komponenter
     <ScrollView contentContainerStyle={styles.container}>
+      <Image source={logo} style={styles.logo} />
       <Text style={styles.header}>Sign up</Text>
       <TextInput
         placeholder="Email"
@@ -63,7 +65,7 @@ function SignUpForm() {
         <Text style={styles.buttonText}>Create Account</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.loginButton} onPress={navToLogin}>
-        <Text style={styles.loginButtonText}>Already have an account? Log in</Text>
+        <Text style={styles.loginButtonText}>Log in</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: '#4CAF50',
     padding: 15,
     borderRadius: 5,
     width: '100%',
@@ -109,8 +111,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   loginButtonText: {
-    color: 'blue',
+    color: 'darkgreen',
     fontSize: 16,
+  },
+  logo: {
+    width: 150, 
+    height: 150, 
+    resizeMode: 'contain', 
+    marginBottom: 1, 
+    marginTop: -60,
   },
 });
 
