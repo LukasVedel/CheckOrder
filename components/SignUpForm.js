@@ -25,7 +25,7 @@ function SignUpForm() {
       // Gem brugerrollen i Firestore
       const db = getFirestore();
       await setDoc(doc(db, 'users', user.uid), {
-        role: 'admin', 
+        role: 'lærer', 
         email: user.email 
       });
 
